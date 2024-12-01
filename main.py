@@ -15,6 +15,9 @@ if __name__ == "__main__":
     # if not nx.is_connected(G): #not implemented for directed type
     #     print("Identifier graph is not connected")
     #     os._exit(1)
+    
+    Visualize_graph(G=G)
+    
         
     
         
