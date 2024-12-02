@@ -29,7 +29,7 @@ CPE_components = [
 ]
 
 
-def parse_cpe(cpe_string: str) -> Dict[str, str]:
+def parse_cpe(cpe_string: str) -> List[str]:
     if not cpe_string.startswith("cpe:2.3:"):
         raise ValueError("Invalid CPE string format. Expected CPE 2.3 format.")
     parts = cpe_string.split(":")
@@ -44,60 +44,72 @@ def Identifiers_to_nodes_and_edges(
     packages: List["PackageType"],
     artifacts: List["Artifact"],
     metadata: List["Metadata"],
+    fragmented: bool,
+    only_CPE: bool,
+    only_Purl: bool,
 ) -> Tuple[Dict[str, IdentifierNode], List[IdentifierEdge]]:
     dict_of_nodes: Dict[str, IdentifierNode] = {}
     list_of_edges: List[IdentifierEdge] = []
-
-    for meta in metadata:
-        if meta.key == "cpe":
-            components = parse_cpe(cpe_string=meta.value)
-
-            if (
-                components[2] != "*" and components[2] not in dict_of_nodes
-            ):  # since product is the artifact name here
-                dict_of_nodes[components[2]] = IdentifierNode(
-                    id=components[2],
-                    type="SymPurl",
-                    attributes={"from_identifier_type": "cpe"},
-                )
-                list_of_edges.append(
-                    IdentifierEdge(
-                        id="GUACID||" + components[2],
-                        source="GAUCID",
-                        target=components[2],
-                        attributes={"link_type": "connector"},
-                    ),
-                )
-
-            for index, component in enumerate(components):
-
-                if index == 2:
-                    continue  # already added to nodes list
+    if not fragmented:
+        dict_of_nodes["GUACID"] = IdentifierNode(
+            id="GAUCID",
+            type="Connector",
+            attributes={"from_identifier_type": "none"},
+        )
+    if only_Purl:
+        for package in packages:
+            pass
+    if only_CPE:
+        for meta in metadata:
+            if meta.key == "cpe":
+                components = parse_cpe(cpe_string=meta.value)
 
                 if (
-                    component != "*"
-                    and CPE_components[index] + "|" + component not in dict_of_nodes
-                ):
-                    dict_of_nodes[CPE_components[index] + "|" + component] = (
-                        IdentifierNode(
-                            id=CPE_components[index] + "|" + component,
-                            type="label",
-                            attributes={"from_identifier_type": "cpe"},
-                        )
+                    components[2] != "*" and components[2] not in dict_of_nodes
+                ):  # since product is the artifact name here
+                    dict_of_nodes[components[2]] = IdentifierNode(
+                        id=components[2],
+                        type="SymPurl",
+                        attributes={"from_identifier_type": "cpe"},
                     )
-                    label_prefix = ""
-                    if index >= len(CPE_components):
-                        label_prefix = CPE_components[len(CPE_components) - 1]
-                    else:
-                        label_prefix = CPE_components[index]
-                    list_of_edges.append(
-                        IdentifierEdge(
-                            id=components[2] + "||" + label_prefix + "|" + component,
-                            source=components[2],
-                            target=CPE_components[index] + "|" + component,
-                            attributes={"link_type": "to_label"},
+                    if not fragmented:
+                        list_of_edges.append(
+                            IdentifierEdge(
+                                id="GUACID||" + components[2],
+                                source="GAUCID",
+                                target=components[2],
+                                attributes={"link_type": "connector"},
+                            ),
                         )
-                    )
+
+                for index, component in enumerate(components):
+
+                    if index == 2:
+                        continue  # already added to nodes list
+
+                    
+
+                    if component != "*":
+                        nodeID = CPE_components[index] + "|" + component
+                        if nodeID not in dict_of_nodes:
+                            dict_of_nodes[nodeID] = IdentifierNode(
+                                id=nodeID,
+                                type="label",
+                                attributes={"from_identifier_type": "cpe"},
+                            )
+                            label_prefix = ""
+                            if index >= len(CPE_components):
+                                label_prefix = CPE_components[len(CPE_components) - 1]
+                            else:
+                                label_prefix = CPE_components[index]
+                            list_of_edges.append(
+                                IdentifierEdge(
+                                    id= label_prefix + "|" + component +"||"+components[2],
+                                    source=label_prefix + "|" + component,
+                                    target=components[2] ,
+                                    attributes={"link_type": "to_label"},
+                                )
+                            )
 
     return dict_of_nodes, list_of_edges
 
