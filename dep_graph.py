@@ -1,98 +1,101 @@
+import json
+import os
 import networkx as nx
 import matplotlib.pyplot as plt
-import json
 
-#json file
-with open("hasSBOM-syft-spdx-k8s.gcr.io-kube-apiserver.v1.24.1.json", "r") as f:
-    data = json.load(f)
+#sbom json file 
+def process_sbom_file(file_path, graph, software_nodes, dependency_nodes, edges, software_mapping):
+    with open(file_path, "r") as f:
+        data = json.load(f)
 
-#directed graph -> dep graph
-G = nx.DiGraph()
+    #if includedDependencies is empty, skip
+    if not data.get("includedDependencies"):
+        print(f"Skipping {file_path} (no includedDependencies found)...")
+        return
 
-#sets for nodes and edges
-software_nodes = set()
-dependency_nodes = set()
-edges = []
+    file_software_nodes = set()  #tracking software nodes
 
-#processing
-for entry in data:
-    #software node
-    if "subject" in entry and "namespaces" in entry["subject"]:
-        namespaces = entry["subject"]["namespaces"]
-        if namespaces and "names" in namespaces[0] and namespaces[0]["names"]:
-            software_name = namespaces[0]["names"][0]["name"]
-            software_nodes.add(software_name)
-            
-            #dependencies
-            if "includedSoftware" in entry:
-                for dep in entry["includedSoftware"]:
-                    if "namespaces" in dep and dep["namespaces"]:
-                        dep_namespace = dep["namespaces"][0]
-                        if "names" in dep_namespace and dep_namespace["names"]:
-                            dependency_name = dep_namespace["names"][0]["name"]
-                            dependency_nodes.add(dependency_name)
-                            #edge from software to dep node
+    #extracting software node
+    subject = data.get("subject", {})
+    if "namespaces" in subject:
+        for namespace in subject["namespaces"]:
+            if "names" in namespace:
+                for name_entry in namespace["names"]:
+                    software_name = name_entry.get("name", "Unknown")
+                    software_nodes.add(software_name)
+                    file_software_nodes.add(software_name)
+
+    #extracting dep nodes
+    for dependency_entry in data["includedDependencies"]:
+        dependency_package = dependency_entry.get("dependencyPackage", {})
+        if "namespaces" in dependency_package:
+            for namespace in dependency_package["namespaces"]:
+                if "names" in namespace:
+                    for name_entry in namespace["names"]:
+                        dependency_name = name_entry.get("name", "Unknown")
+                        dependency_nodes.add(dependency_name)
+
+                        #adding edge
+                        for software_name in file_software_nodes:
                             edges.append((software_name, dependency_name))
 
-dependency_nodes = dependency_nodes - software_nodes
+    #for logging
+    software_mapping[file_path] = file_software_nodes
 
-#building graph
-G.add_nodes_from(software_nodes, type="software")
-G.add_nodes_from(dependency_nodes, type="dependency")
-G.add_edges_from(edges)
+def main(directory):
+    G = nx.DiGraph()
 
-#removing self loops
-G.remove_edges_from(nx.selfloop_edges(G))
+    software_nodes = set()
+    dependency_nodes = set()
+    edges = []
 
-#analzing
-#coreness
-coreness = nx.core_number(G.to_undirected())
+    software_mapping = {}
 
-#centrality measures
-degree_centrality = nx.degree_centrality(G)
+    for filename in os.listdir(directory):
+        if filename.endswith(".json"):
+            file_path = os.path.join(directory, filename)
+            print(f"Processing {file_path}...")
+            process_sbom_file(file_path, G, software_nodes, dependency_nodes, edges, software_mapping)
 
-#corness and centrality
-'''
-print("Coreness:")
-for node, core in coreness.items():
-    print(f"{node}: {core}")
+    #building graph
+    G.add_nodes_from(software_nodes, type="software")
+    G.add_nodes_from(dependency_nodes, type="dependency")
+    G.add_edges_from(edges)
 
-'''
-print("\nDegree Centrality:")
-for node, centrality in degree_centrality.items():
-    print(f"{node}: {centrality:.4f}")
+    #coreness
+    coreness = nx.core_number(G.to_undirected())
 
+    #centrality
+    degree_centrality = nx.degree_centrality(G)
 
-# Visualize the graph
-plt.figure(figsize=(12, 8))
-pos = nx.spring_layout(G, seed=42) #spring layout
-nx.draw_networkx_nodes(G, pos, nodelist=list(software_nodes), node_color="blue", label="Software", node_size=500)
-nx.draw_networkx_nodes(G, pos, nodelist=list(dependency_nodes), node_color="orange", label="Dependency", node_size=300)
-nx.draw_networkx_edges(G, pos, edgelist=edges, alpha=0.7)
-nx.draw_networkx_labels(G, pos, font_size=8, font_color="black")
+    #nodes
+    print(f"\nTotal Nodes: {len(G.nodes)}")
+    print(f"Software Nodes: {len(software_nodes)}")
+    print(f"Dependency Nodes: {len(dependency_nodes)}")
+    print(f"Total Edges: {len(G.edges)}")
 
-plt.title("Software Dependency Graph", fontsize=14)
-plt.legend(scatterpoints=1)
-plt.show()
+    #software node names for verification
+    print("\nSoftware Names by SBOM File:")
+    for file, software in software_mapping.items():
+        print(f"{file}: {', '.join(software)}")
 
-'''
+    print("\nCentrality and Coreness for Dependency Nodes:")
+    for node in dependency_nodes:
+        print(f"Dependency Node: {node}")
+        print(f"  Degree Centrality: {degree_centrality.get(node, 0):.4f}")
+        print(f"  Coreness: {coreness.get(node, 0)}")
 
-print("Total nodes:", len(G.nodes))
-print("Software nodes:", len(software_nodes))
-print("Dependency nodes:", len(dependency_nodes))
+    #visualization
+    plt.figure(figsize=(12, 8))
+    pos = nx.spring_layout(G, seed=42)  #spring layout
+    nx.draw_networkx_nodes(G, pos, nodelist=list(software_nodes), node_color="blue", label="Software", node_size=500)
+    nx.draw_networkx_nodes(G, pos, nodelist=list(dependency_nodes), node_color="orange", label="Dependency", node_size=300)
+    nx.draw_networkx_edges(G, pos, edgelist=edges, alpha=0.7)
+    nx.draw_networkx_labels(G, pos, font_size=8, font_color="black")
 
+    plt.title("Software Dependency Graph", fontsize=14)
+    plt.legend(scatterpoints=1)
+    plt.show()
 
-#checking to ensure softwares do depend on each other
-software_nodes = ["kube-apiserver-v1.24.2", "kube-apiserver-v1.24.1"]
-
-#check dependencies
-is_node1_depends_on_node2 = G.has_edge(software_nodes[0], software_nodes[1])
-is_node2_depends_on_node1 = G.has_edge(software_nodes[1], software_nodes[0])
-
-print(f"{software_nodes[0]} depends on {software_nodes[1]}: {is_node1_depends_on_node2}")
-print(f"{software_nodes[1]} depends on {software_nodes[0]}: {is_node2_depends_on_node1}")
-
-
-print("Software nodes in dependency_nodes:", set(software_nodes) & dependency_nodes)
-'''
-
+directory_path = "./test2"  
+main(directory_path)

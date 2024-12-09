@@ -1,0 +1,67 @@
+{
+    "id": "bill_of_materials:345d4e6b-6472-5cfe-ad8a-89701ed96f22",
+    "subject": {
+        "__typename": "Package",
+        "id": "package_types:golang",
+        "type": "golang",
+        "namespaces": [
+            {
+                "id": "package_namespaces:golangguac-split-@@github.com/google",
+                "namespace": "github.com/google",
+                "names": [
+                    {
+                        "id": "package_names:7076c878-338b-5082-8370-98a8a3c5a437",
+                        "name": "btree",
+                        "versions": [
+                            {
+                                "id": "package_versions:fc4ae774-ff36-538b-b1c4-57eb28f71821",
+                                "purl": "pkg:golang/github.com/google/btree@v1.0.0",
+                                "version": "v1.0.0",
+                                "qualifiers": [],
+                                "subpath": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "uri": "pkg:golang/github.com/google/btree@v1.0.0",
+    "algorithm": "sha256",
+    "digest": "bd9fc1a40c722cf0ad803a4ff857148159c9d5da110d5e0e33bbaec0571a5855",
+    "downloadLocation": "deps.dev",
+    "origin": "deps.dev",
+    "collector": "deps.dev",
+    "knownSince": "2024-11-25T15:59:00.71028Z",
+    "documentRef": "sha256_bd9fc1a40c722cf0ad803a4ff857148159c9d5da110d5e0e33bbaec0571a5855",
+    "includedSoftware": [
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/google",
+                    "namespace": "github.com/google",
+                    "names": [
+                        {
+                            "id": "package_names:7076c878-338b-5082-8370-98a8a3c5a437",
+                            "name": "btree",
+                            "versions": [
+                                {
+                                    "id": "package_versions:fc4ae774-ff36-538b-b1c4-57eb28f71821",
+                                    "purl": "pkg:golang/github.com/google/btree@v1.0.0",
+                                    "version": "v1.0.0",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "includedDependencies": [],
+    "includedOccurrences": []
+}

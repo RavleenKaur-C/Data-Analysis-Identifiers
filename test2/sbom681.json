@@ -1,0 +1,67 @@
+{
+    "id": "bill_of_materials:f1dfd79f-b237-59f2-988b-b0abf016729e",
+    "subject": {
+        "__typename": "Package",
+        "id": "package_types:pypi",
+        "type": "pypi",
+        "namespaces": [
+            {
+                "id": "package_namespaces:pypiguac-split-@@",
+                "namespace": "",
+                "names": [
+                    {
+                        "id": "package_names:57955bb1-aba9-55f8-9722-3fe29eaf5d04",
+                        "name": "setuptools",
+                        "versions": [
+                            {
+                                "id": "package_versions:89936eea-1050-5851-a2d2-b9595f03e049",
+                                "purl": "pkg:pypi/setuptools@63.2.0",
+                                "version": "63.2.0",
+                                "qualifiers": [],
+                                "subpath": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "uri": "pkg:pypi/setuptools@63.2.0",
+    "algorithm": "sha256",
+    "digest": "6dbb1fedbc36c663f66d2d083c4f3b1320879bef61c574f073f207cdbd020fba",
+    "downloadLocation": "deps.dev",
+    "origin": "deps.dev",
+    "collector": "deps.dev",
+    "knownSince": "2024-11-25T15:59:04.896195Z",
+    "documentRef": "sha256_6dbb1fedbc36c663f66d2d083c4f3b1320879bef61c574f073f207cdbd020fba",
+    "includedSoftware": [
+        {
+            "__typename": "Package",
+            "id": "package_types:pypi",
+            "type": "pypi",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:pypiguac-split-@@",
+                    "namespace": "",
+                    "names": [
+                        {
+                            "id": "package_names:57955bb1-aba9-55f8-9722-3fe29eaf5d04",
+                            "name": "setuptools",
+                            "versions": [
+                                {
+                                    "id": "package_versions:89936eea-1050-5851-a2d2-b9595f03e049",
+                                    "purl": "pkg:pypi/setuptools@63.2.0",
+                                    "version": "63.2.0",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "includedDependencies": [],
+    "includedOccurrences": []
+}

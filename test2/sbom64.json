@@ -1,0 +1,67 @@
+{
+    "id": "bill_of_materials:eb05083c-0033-5911-acf7-9cc026602db3",
+    "subject": {
+        "__typename": "Package",
+        "id": "package_types:pypi",
+        "type": "pypi",
+        "namespaces": [
+            {
+                "id": "package_namespaces:pypiguac-split-@@",
+                "namespace": "",
+                "names": [
+                    {
+                        "id": "package_names:ff4b372f-e484-5990-abb0-89414ac8f474",
+                        "name": "mercurial",
+                        "versions": [
+                            {
+                                "id": "package_versions:39aba180-44d9-52b3-84fc-a55d1b3fd2b7",
+                                "purl": "pkg:pypi/mercurial@6.1.1",
+                                "version": "6.1.1",
+                                "qualifiers": [],
+                                "subpath": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "uri": "pkg:pypi/mercurial@6.1.1",
+    "algorithm": "sha256",
+    "digest": "76628b042ab67b993fa3008e7d8b0b80a5037d61b1494fcf9d9ff599dfd77b21",
+    "downloadLocation": "deps.dev",
+    "origin": "deps.dev",
+    "collector": "deps.dev",
+    "knownSince": "2024-11-25T15:36:13.599332Z",
+    "documentRef": "sha256_76628b042ab67b993fa3008e7d8b0b80a5037d61b1494fcf9d9ff599dfd77b21",
+    "includedSoftware": [
+        {
+            "__typename": "Package",
+            "id": "package_types:pypi",
+            "type": "pypi",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:pypiguac-split-@@",
+                    "namespace": "",
+                    "names": [
+                        {
+                            "id": "package_names:ff4b372f-e484-5990-abb0-89414ac8f474",
+                            "name": "mercurial",
+                            "versions": [
+                                {
+                                    "id": "package_versions:39aba180-44d9-52b3-84fc-a55d1b3fd2b7",
+                                    "purl": "pkg:pypi/mercurial@6.1.1",
+                                    "version": "6.1.1",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "includedDependencies": [],
+    "includedOccurrences": []
+}

@@ -1,0 +1,67 @@
+{
+    "id": "bill_of_materials:33c2033d-2bd8-572f-aca9-efb93066356b",
+    "subject": {
+        "__typename": "Package",
+        "id": "package_types:pypi",
+        "type": "pypi",
+        "namespaces": [
+            {
+                "id": "package_namespaces:pypiguac-split-@@",
+                "namespace": "",
+                "names": [
+                    {
+                        "id": "package_names:671feaa8-eef5-55dc-abb0-a43cda6cdb91",
+                        "name": "wheel",
+                        "versions": [
+                            {
+                                "id": "package_versions:e521f1cb-9842-5b42-9817-bcccc4767b4b",
+                                "purl": "pkg:pypi/wheel@0.37.1",
+                                "version": "0.37.1",
+                                "qualifiers": [],
+                                "subpath": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "uri": "pkg:pypi/wheel@0.37.1",
+    "algorithm": "sha256",
+    "digest": "4428a7d37621a8338ec17686fe830f92ed686aced5f3cb5913939d9eb72dcbb8",
+    "downloadLocation": "deps.dev",
+    "origin": "deps.dev",
+    "collector": "deps.dev",
+    "knownSince": "2024-11-25T15:36:19.537473Z",
+    "documentRef": "sha256_4428a7d37621a8338ec17686fe830f92ed686aced5f3cb5913939d9eb72dcbb8",
+    "includedSoftware": [
+        {
+            "__typename": "Package",
+            "id": "package_types:pypi",
+            "type": "pypi",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:pypiguac-split-@@",
+                    "namespace": "",
+                    "names": [
+                        {
+                            "id": "package_names:671feaa8-eef5-55dc-abb0-a43cda6cdb91",
+                            "name": "wheel",
+                            "versions": [
+                                {
+                                    "id": "package_versions:e521f1cb-9842-5b42-9817-bcccc4767b4b",
+                                    "purl": "pkg:pypi/wheel@0.37.1",
+                                    "version": "0.37.1",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "includedDependencies": [],
+    "includedOccurrences": []
+}

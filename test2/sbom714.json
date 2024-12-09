@@ -1,0 +1,234 @@
+{
+    "id": "bill_of_materials:80d6534a-ff1f-5af1-890b-a015939d47cf",
+    "subject": {
+        "__typename": "Package",
+        "id": "package_types:golang",
+        "type": "golang",
+        "namespaces": [
+            {
+                "id": "package_namespaces:golangguac-split-@@github.com/centrify",
+                "namespace": "github.com/centrify",
+                "names": [
+                    {
+                        "id": "package_names:606664c2-c519-5862-b018-61258bb796ff",
+                        "name": "cloud-golang-sdk",
+                        "versions": [
+                            {
+                                "id": "package_versions:76b9a5bd-b3fd-582c-b92f-1d0336028314",
+                                "purl": "pkg:golang/github.com/centrify/cloud-golang-sdk@v0.0.0-20210923165758-a8c48d049166",
+                                "version": "v0.0.0-20210923165758-a8c48d049166",
+                                "qualifiers": [],
+                                "subpath": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "uri": "pkg:golang/github.com/centrify/cloud-golang-sdk@v0.0.0-20210923165758-a8c48d049166",
+    "algorithm": "sha256",
+    "digest": "3dbd033b83efdf35469c1c1052f3615cbe3d434e2b3a4ada5adb0f51d91629a6",
+    "downloadLocation": "deps.dev",
+    "origin": "deps.dev",
+    "collector": "deps.dev",
+    "knownSince": "2024-11-25T15:59:06.141503Z",
+    "documentRef": "sha256_3dbd033b83efdf35469c1c1052f3615cbe3d434e2b3a4ada5adb0f51d91629a6",
+    "includedSoftware": [
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/centrify",
+                    "namespace": "github.com/centrify",
+                    "names": [
+                        {
+                            "id": "package_names:606664c2-c519-5862-b018-61258bb796ff",
+                            "name": "cloud-golang-sdk",
+                            "versions": [
+                                {
+                                    "id": "package_versions:76b9a5bd-b3fd-582c-b92f-1d0336028314",
+                                    "purl": "pkg:golang/github.com/centrify/cloud-golang-sdk@v0.0.0-20210923165758-a8c48d049166",
+                                    "version": "v0.0.0-20210923165758-a8c48d049166",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@golang.org/x",
+                    "namespace": "golang.org/x",
+                    "names": [
+                        {
+                            "id": "package_names:6c0a9691-7a6f-5176-a395-cab080877631",
+                            "name": "sys",
+                            "versions": [
+                                {
+                                    "id": "package_versions:f8827951-5697-5ee3-ad04-5589bc12e2ac",
+                                    "purl": "pkg:golang/golang.org/x/sys@v0.0.0-20210615035016-665e8c7367d1",
+                                    "version": "v0.0.0-20210615035016-665e8c7367d1",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@golang.org/x",
+                    "namespace": "golang.org/x",
+                    "names": [
+                        {
+                            "id": "package_names:f591ec1a-678d-51cb-96c3-556328746351",
+                            "name": "term",
+                            "versions": [
+                                {
+                                    "id": "package_versions:b6046b56-a789-5b77-950a-8dae07736698",
+                                    "purl": "pkg:golang/golang.org/x/term@v0.0.0-20210615171337-6886f2dfbf5b",
+                                    "version": "v0.0.0-20210615171337-6886f2dfbf5b",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "includedDependencies": [
+        {
+            "id": "dependencies:6fb6e1ef-5a5e-5be4-8033-580ce928e6ac",
+            "justification": "dependency data collected via deps.dev",
+            "package": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/centrify",
+                        "namespace": "github.com/centrify",
+                        "names": [
+                            {
+                                "id": "package_names:606664c2-c519-5862-b018-61258bb796ff",
+                                "name": "cloud-golang-sdk",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:76b9a5bd-b3fd-582c-b92f-1d0336028314",
+                                        "purl": "pkg:golang/github.com/centrify/cloud-golang-sdk@v0.0.0-20210923165758-a8c48d049166",
+                                        "version": "v0.0.0-20210923165758-a8c48d049166",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyPackage": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@golang.org/x",
+                        "namespace": "golang.org/x",
+                        "names": [
+                            {
+                                "id": "package_names:f591ec1a-678d-51cb-96c3-556328746351",
+                                "name": "term",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:b6046b56-a789-5b77-950a-8dae07736698",
+                                        "purl": "pkg:golang/golang.org/x/term@v0.0.0-20210615171337-6886f2dfbf5b",
+                                        "version": "v0.0.0-20210615171337-6886f2dfbf5b",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyType": "DIRECT",
+            "origin": "deps.dev",
+            "collector": "deps.dev"
+        },
+        {
+            "id": "dependencies:c8643260-5137-588a-982b-cd0f18417e14",
+            "justification": "dependency data collected via deps.dev",
+            "package": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@golang.org/x",
+                        "namespace": "golang.org/x",
+                        "names": [
+                            {
+                                "id": "package_names:f591ec1a-678d-51cb-96c3-556328746351",
+                                "name": "term",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:b6046b56-a789-5b77-950a-8dae07736698",
+                                        "purl": "pkg:golang/golang.org/x/term@v0.0.0-20210615171337-6886f2dfbf5b",
+                                        "version": "v0.0.0-20210615171337-6886f2dfbf5b",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyPackage": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@golang.org/x",
+                        "namespace": "golang.org/x",
+                        "names": [
+                            {
+                                "id": "package_names:6c0a9691-7a6f-5176-a395-cab080877631",
+                                "name": "sys",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:f8827951-5697-5ee3-ad04-5589bc12e2ac",
+                                        "purl": "pkg:golang/golang.org/x/sys@v0.0.0-20210615035016-665e8c7367d1",
+                                        "version": "v0.0.0-20210615035016-665e8c7367d1",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyType": "DIRECT",
+            "origin": "deps.dev",
+            "collector": "deps.dev"
+        }
+    ],
+    "includedOccurrences": []
+}

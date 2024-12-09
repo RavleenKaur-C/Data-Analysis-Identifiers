@@ -1,0 +1,317 @@
+{
+    "id": "bill_of_materials:c5920731-e009-5e15-b9fd-bfa9e76802cb",
+    "subject": {
+        "__typename": "Package",
+        "id": "package_types:golang",
+        "type": "golang",
+        "namespaces": [
+            {
+                "id": "package_namespaces:golangguac-split-@@github.com/nytimes",
+                "namespace": "github.com/nytimes",
+                "names": [
+                    {
+                        "id": "package_names:15740410-06c4-5ad6-add3-1d8dc09cd94d",
+                        "name": "gziphandler",
+                        "versions": [
+                            {
+                                "id": "package_versions:e2a4655d-0a95-5803-999d-76bebe23a687",
+                                "purl": "pkg:golang/github.com/nytimes/gziphandler@v1.1.1",
+                                "version": "v1.1.1",
+                                "qualifiers": [],
+                                "subpath": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "uri": "pkg:golang/github.com/nytimes/gziphandler@v1.1.1",
+    "algorithm": "sha256",
+    "digest": "f430649f7aa1a2eff1c02c380658ae9fc01218305ed084a3a4773f69d3e1d3d4",
+    "downloadLocation": "deps.dev",
+    "origin": "deps.dev",
+    "collector": "deps.dev",
+    "knownSince": "2024-11-25T15:36:20.456957Z",
+    "documentRef": "sha256_f430649f7aa1a2eff1c02c380658ae9fc01218305ed084a3a4773f69d3e1d3d4",
+    "includedSoftware": [
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/pmezard",
+                    "namespace": "github.com/pmezard",
+                    "names": [
+                        {
+                            "id": "package_names:0d836c82-453d-5a89-bc6a-3564341c300f",
+                            "name": "go-difflib",
+                            "versions": [
+                                {
+                                    "id": "package_versions:dfbc56cb-6f65-57e9-b22d-2a0518a7b887",
+                                    "purl": "pkg:golang/github.com/pmezard/go-difflib@v1.0.0",
+                                    "version": "v1.0.0",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/nytimes",
+                    "namespace": "github.com/nytimes",
+                    "names": [
+                        {
+                            "id": "package_names:15740410-06c4-5ad6-add3-1d8dc09cd94d",
+                            "name": "gziphandler",
+                            "versions": [
+                                {
+                                    "id": "package_versions:e2a4655d-0a95-5803-999d-76bebe23a687",
+                                    "purl": "pkg:golang/github.com/nytimes/gziphandler@v1.1.1",
+                                    "version": "v1.1.1",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/stretchr",
+                    "namespace": "github.com/stretchr",
+                    "names": [
+                        {
+                            "id": "package_names:e7334ffd-01f1-5318-b175-d3eac7287d90",
+                            "name": "testify",
+                            "versions": [
+                                {
+                                    "id": "package_versions:726be52b-6711-5d91-9f92-e62c2526adf4",
+                                    "purl": "pkg:golang/github.com/stretchr/testify@v1.3.0",
+                                    "version": "v1.3.0",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/davecgh",
+                    "namespace": "github.com/davecgh",
+                    "names": [
+                        {
+                            "id": "package_names:4df76640-260f-55d6-b589-53fe43f73ee8",
+                            "name": "go-spew",
+                            "versions": [
+                                {
+                                    "id": "package_versions:a3c67cce-7563-54d4-a8bb-ac44cd3b4bfe",
+                                    "purl": "pkg:golang/github.com/davecgh/go-spew@v1.1.0",
+                                    "version": "v1.1.0",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "includedDependencies": [
+        {
+            "id": "dependencies:a80a6b9a-b479-590e-b6ae-bffe339ad682",
+            "justification": "dependency data collected via deps.dev",
+            "package": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/nytimes",
+                        "namespace": "github.com/nytimes",
+                        "names": [
+                            {
+                                "id": "package_names:15740410-06c4-5ad6-add3-1d8dc09cd94d",
+                                "name": "gziphandler",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:e2a4655d-0a95-5803-999d-76bebe23a687",
+                                        "purl": "pkg:golang/github.com/nytimes/gziphandler@v1.1.1",
+                                        "version": "v1.1.1",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyPackage": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/stretchr",
+                        "namespace": "github.com/stretchr",
+                        "names": [
+                            {
+                                "id": "package_names:e7334ffd-01f1-5318-b175-d3eac7287d90",
+                                "name": "testify",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:726be52b-6711-5d91-9f92-e62c2526adf4",
+                                        "purl": "pkg:golang/github.com/stretchr/testify@v1.3.0",
+                                        "version": "v1.3.0",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyType": "DIRECT",
+            "origin": "deps.dev",
+            "collector": "deps.dev"
+        },
+        {
+            "id": "dependencies:7ad099c1-0370-5dac-9d86-ad0c3842b58a",
+            "justification": "dependency data collected via deps.dev",
+            "package": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/stretchr",
+                        "namespace": "github.com/stretchr",
+                        "names": [
+                            {
+                                "id": "package_names:e7334ffd-01f1-5318-b175-d3eac7287d90",
+                                "name": "testify",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:726be52b-6711-5d91-9f92-e62c2526adf4",
+                                        "purl": "pkg:golang/github.com/stretchr/testify@v1.3.0",
+                                        "version": "v1.3.0",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyPackage": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/davecgh",
+                        "namespace": "github.com/davecgh",
+                        "names": [
+                            {
+                                "id": "package_names:4df76640-260f-55d6-b589-53fe43f73ee8",
+                                "name": "go-spew",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:a3c67cce-7563-54d4-a8bb-ac44cd3b4bfe",
+                                        "purl": "pkg:golang/github.com/davecgh/go-spew@v1.1.0",
+                                        "version": "v1.1.0",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyType": "DIRECT",
+            "origin": "deps.dev",
+            "collector": "deps.dev"
+        },
+        {
+            "id": "dependencies:483f12ec-18ef-5426-8677-2d0cf455c779",
+            "justification": "dependency data collected via deps.dev",
+            "package": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/stretchr",
+                        "namespace": "github.com/stretchr",
+                        "names": [
+                            {
+                                "id": "package_names:e7334ffd-01f1-5318-b175-d3eac7287d90",
+                                "name": "testify",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:726be52b-6711-5d91-9f92-e62c2526adf4",
+                                        "purl": "pkg:golang/github.com/stretchr/testify@v1.3.0",
+                                        "version": "v1.3.0",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyPackage": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/pmezard",
+                        "namespace": "github.com/pmezard",
+                        "names": [
+                            {
+                                "id": "package_names:0d836c82-453d-5a89-bc6a-3564341c300f",
+                                "name": "go-difflib",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:dfbc56cb-6f65-57e9-b22d-2a0518a7b887",
+                                        "purl": "pkg:golang/github.com/pmezard/go-difflib@v1.0.0",
+                                        "version": "v1.0.0",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyType": "DIRECT",
+            "origin": "deps.dev",
+            "collector": "deps.dev"
+        }
+    ],
+    "includedOccurrences": []
+}

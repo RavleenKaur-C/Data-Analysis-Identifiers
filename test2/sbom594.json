@@ -1,0 +1,234 @@
+{
+    "id": "bill_of_materials:5dd92409-6c12-5fd7-8b0f-76fff2d4b081",
+    "subject": {
+        "__typename": "Package",
+        "id": "package_types:golang",
+        "type": "golang",
+        "namespaces": [
+            {
+                "id": "package_namespaces:golangguac-split-@@github.com/hashicorp",
+                "namespace": "github.com/hashicorp",
+                "names": [
+                    {
+                        "id": "package_names:4341ff06-d50e-572a-9707-fca96f7d12c8",
+                        "name": "consul-net-rpc",
+                        "versions": [
+                            {
+                                "id": "package_versions:31777b0e-a711-5c77-848c-d601c6619c27",
+                                "purl": "pkg:golang/github.com/hashicorp/consul-net-rpc@v0.0.0-20220307172752-3602954411b4",
+                                "version": "v0.0.0-20220307172752-3602954411b4",
+                                "qualifiers": [],
+                                "subpath": ""
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "uri": "pkg:golang/github.com/hashicorp/consul-net-rpc@v0.0.0-20220307172752-3602954411b4",
+    "algorithm": "sha256",
+    "digest": "b19284e8f1a889472d27039a0bba254f1babfb6495b62def32f390e97e5c9a66",
+    "downloadLocation": "deps.dev",
+    "origin": "deps.dev",
+    "collector": "deps.dev",
+    "knownSince": "2024-11-25T15:59:00.912059Z",
+    "documentRef": "sha256_b19284e8f1a889472d27039a0bba254f1babfb6495b62def32f390e97e5c9a66",
+    "includedSoftware": [
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/hashicorp",
+                    "namespace": "github.com/hashicorp",
+                    "names": [
+                        {
+                            "id": "package_names:4341ff06-d50e-572a-9707-fca96f7d12c8",
+                            "name": "consul-net-rpc",
+                            "versions": [
+                                {
+                                    "id": "package_versions:31777b0e-a711-5c77-848c-d601c6619c27",
+                                    "purl": "pkg:golang/github.com/hashicorp/consul-net-rpc@v0.0.0-20220307172752-3602954411b4",
+                                    "version": "v0.0.0-20220307172752-3602954411b4",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/hashicorp",
+                    "namespace": "github.com/hashicorp",
+                    "names": [
+                        {
+                            "id": "package_names:94de1bf2-729d-57e4-bff3-9f5e88eee984",
+                            "name": "errwrap",
+                            "versions": [
+                                {
+                                    "id": "package_versions:4532e427-5a0a-51a3-902f-8cd5241ee8e6",
+                                    "purl": "pkg:golang/github.com/hashicorp/errwrap@v1.0.0",
+                                    "version": "v1.0.0",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "__typename": "Package",
+            "id": "package_types:golang",
+            "type": "golang",
+            "namespaces": [
+                {
+                    "id": "package_namespaces:golangguac-split-@@github.com/hashicorp",
+                    "namespace": "github.com/hashicorp",
+                    "names": [
+                        {
+                            "id": "package_names:55287d4e-1a54-5bcd-8c1c-89c89290dc76",
+                            "name": "go-multierror",
+                            "versions": [
+                                {
+                                    "id": "package_versions:c93f81da-a5dc-57fc-a47d-506f221afd90",
+                                    "purl": "pkg:golang/github.com/hashicorp/go-multierror@v1.1.1",
+                                    "version": "v1.1.1",
+                                    "qualifiers": [],
+                                    "subpath": ""
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "includedDependencies": [
+        {
+            "id": "dependencies:38ac1646-66a5-5c44-ae02-01f0747f4595",
+            "justification": "dependency data collected via deps.dev",
+            "package": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/hashicorp",
+                        "namespace": "github.com/hashicorp",
+                        "names": [
+                            {
+                                "id": "package_names:4341ff06-d50e-572a-9707-fca96f7d12c8",
+                                "name": "consul-net-rpc",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:31777b0e-a711-5c77-848c-d601c6619c27",
+                                        "purl": "pkg:golang/github.com/hashicorp/consul-net-rpc@v0.0.0-20220307172752-3602954411b4",
+                                        "version": "v0.0.0-20220307172752-3602954411b4",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyPackage": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/hashicorp",
+                        "namespace": "github.com/hashicorp",
+                        "names": [
+                            {
+                                "id": "package_names:55287d4e-1a54-5bcd-8c1c-89c89290dc76",
+                                "name": "go-multierror",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:c93f81da-a5dc-57fc-a47d-506f221afd90",
+                                        "purl": "pkg:golang/github.com/hashicorp/go-multierror@v1.1.1",
+                                        "version": "v1.1.1",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyType": "DIRECT",
+            "origin": "deps.dev",
+            "collector": "deps.dev"
+        },
+        {
+            "id": "dependencies:b45dd253-0b86-5131-b1ae-d35823a2a62f",
+            "justification": "dependency data collected via deps.dev",
+            "package": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/hashicorp",
+                        "namespace": "github.com/hashicorp",
+                        "names": [
+                            {
+                                "id": "package_names:55287d4e-1a54-5bcd-8c1c-89c89290dc76",
+                                "name": "go-multierror",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:c93f81da-a5dc-57fc-a47d-506f221afd90",
+                                        "purl": "pkg:golang/github.com/hashicorp/go-multierror@v1.1.1",
+                                        "version": "v1.1.1",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyPackage": {
+                "id": "package_types:golang",
+                "type": "golang",
+                "namespaces": [
+                    {
+                        "id": "package_namespaces:golangguac-split-@@github.com/hashicorp",
+                        "namespace": "github.com/hashicorp",
+                        "names": [
+                            {
+                                "id": "package_names:94de1bf2-729d-57e4-bff3-9f5e88eee984",
+                                "name": "errwrap",
+                                "versions": [
+                                    {
+                                        "id": "package_versions:4532e427-5a0a-51a3-902f-8cd5241ee8e6",
+                                        "purl": "pkg:golang/github.com/hashicorp/errwrap@v1.0.0",
+                                        "version": "v1.0.0",
+                                        "qualifiers": [],
+                                        "subpath": ""
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "dependencyType": "DIRECT",
+            "origin": "deps.dev",
+            "collector": "deps.dev"
+        }
+    ],
+    "includedOccurrences": []
+}
