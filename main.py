@@ -13,24 +13,14 @@ if __name__ == "__main__":
     nodes_conn, edges_conn = Identifiers_to_nodes_and_edges(packages=packages, metadata=metadatas, artifacts=artifacts, fragmented=False, only_CPE=True, only_Purl=True)
     
     G_frag = Create_identifier_graph(nodes=nodes_frag, edges=edges_frag)
-    # G_conn = Create_identifier_graph(nodes=nodes_conn, edges=edges_conn)
+    G_conn = Create_identifier_graph(nodes=nodes_conn, edges=edges_conn)
 
     
     # Visualize_graph(G=G_conn)
-    Visualize_graph(G=G_frag)
-    in_degrees = dict(G_frag.in_degree())
+    # Visualize_graph(G=G_frag)
+        
+    # model, embeddings = train_graph_autoencoder(G_frag, hidden_dim=32, embedding_dim=16, epochs=100, lr=0.01)
 
-    top_10_nodes = sorted(in_degrees.items(), key=lambda x: x[1], reverse=True)
-
-    print("Top 10 nodes by in-degree:")
-    for node, degree in top_10_nodes:
-        print(f"Node {node}: In-degree {degree}")
-        
-        
-        
-    
-        
-        
-    
-    
-   
+    # # Visualize the embeddings
+    # print("\nVisualizing the embeddings...")
+    # visualize_embeddings(embeddings, labels=list(G_frag.nodes))

@@ -56,9 +56,32 @@ def Identifiers_to_nodes_and_edges(
             type="Connector",
             attributes={"from_identifier_type": "none"},
         )
-    if only_Purl:
-        for package in packages:
-            pass
+    # if only_Purl:
+    #     for package in packages:
+    #         if package.type not in dict_of_nodes:
+    #             dict_of_nodes[components[2]] = IdentifierNode(
+    #                 id=components[2],
+    #                 type="SymPurl",
+    #                 attributes={"from_identifier_type": "cpe"},
+    #             )
+    #             for package_type in package_types:
+
+    #             G.add_node(package_type.id, label=package_type.type)
+
+
+    #             for namespace in package_type.namespaces:
+    #                 G.add_node(namespace.id, label=namespace.namespace)
+    #                 G.add_edge(package_type.id, namespace.id)
+
+    #                 for name in namespace.names:
+    #                     G.add_node(name.id, label=name.name)
+    #                     G.add_edge(namespace.id, name.id)
+
+            
+    #                     for version in name.versions:
+    #                         G.add_node(version.id, label=version.version)
+    #                         G.add_edge(name.id, version.id)
+    #         pass
     if only_CPE:
         for meta in metadata:
             if meta.key == "cpe":
@@ -87,8 +110,6 @@ def Identifiers_to_nodes_and_edges(
                     if index == 2:
                         continue  # already added to nodes list
 
-                    
-
                     if component != "*":
                         nodeID = CPE_components[index] + "|" + component
                         if nodeID not in dict_of_nodes:
@@ -104,9 +125,13 @@ def Identifiers_to_nodes_and_edges(
                                 label_prefix = CPE_components[index]
                             list_of_edges.append(
                                 IdentifierEdge(
-                                    id= label_prefix + "|" + component +"||"+components[2],
+                                    id=label_prefix
+                                    + "|"
+                                    + component
+                                    + "||"
+                                    + components[2],
                                     source=label_prefix + "|" + component,
-                                    target=components[2] ,
+                                    target=components[2],
                                     attributes={"link_type": "to_label"},
                                 )
                             )
