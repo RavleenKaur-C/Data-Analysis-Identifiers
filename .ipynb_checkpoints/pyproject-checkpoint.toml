@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dependency-graph-generator"
+version = "0.1.0"
+description = "A tool to parse SBOM JSON files and generate dependency graphs."
+authors = [
+    {name = "Ravleen Kaur Chhabra", email = "chhabra4@purdue.edu"}
+]
+license = {text = "MIT"}
+dependencies = ["matplotlib", "networkx"]
+
+[tool.setuptools]
+packages = ["."]

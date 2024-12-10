@@ -62,6 +62,8 @@ def main(directory):
     G.add_nodes_from(dependency_nodes, type="dependency")
     G.add_edges_from(edges)
 
+    G.remove_edges_from(nx.selfloop_edges(G))
+
     #coreness
     coreness = nx.core_number(G.to_undirected())
 
@@ -97,5 +99,5 @@ def main(directory):
     plt.legend(scatterpoints=1)
     plt.show()
 
-directory_path = "./test2"  
+directory_path = "./data/guac-data-hassboms"  
 main(directory_path)
