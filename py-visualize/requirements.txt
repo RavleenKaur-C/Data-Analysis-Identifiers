@@ -1,0 +1,4 @@
+matplotlib
+networkx
+node2vec
+torch

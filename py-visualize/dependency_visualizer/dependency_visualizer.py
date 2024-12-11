@@ -42,7 +42,7 @@ def process_sbom_file(file_path, graph, software_nodes, dependency_nodes, edges,
     #for logging
     software_mapping[file_path] = file_software_nodes
 
-def main(directory):
+def Visualize_sbom_deps_from_dir(directory):
     G = nx.DiGraph()
 
     software_nodes = set()
@@ -99,5 +99,4 @@ def main(directory):
     plt.legend(scatterpoints=1)
     plt.show()
 
-directory_path = "./data/guac-data-hassboms"  
-main(directory_path)
+
