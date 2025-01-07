@@ -8,6 +8,8 @@ type GuacIDArtifact struct {
 }
 
 type GuacID struct {
+	Digest    string   `json:"digest,omitempty"`
+	Count     int64    `json:"count,omitempty"`
 	Ecosystem string   `json:"ecosystem,omitempty"`
 	Namespace string   `json:"namespace,omitempty"`
 	Name      string   `json:"name,omitempty"`
@@ -51,13 +53,20 @@ type Community struct {
 
 type GuacIDNode struct {
 	NodeID     string
-	NodeType   GuacIDNodeType
+	NodeType   NodeHardness
 	NodeWeight float32
 }
 
-type GuacIDNodeType int
+type GuacIDEdge struct {
+	EdgeID  string
+	Source  string
+	Target  string
+	Counter int64
+}
+
+type NodeHardness int
 
 const (
-	NodeTypeSoft GuacIDNodeType = iota
-	NodeTypeHard
+	NodeHardnessSoft NodeHardness = iota
+	NodeHardnessHard
 )

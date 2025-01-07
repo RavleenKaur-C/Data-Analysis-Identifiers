@@ -22,7 +22,7 @@ func ConvertPurlToGuacID(purl Purl) GuacID {
 	if purl.Type == "core" {
 		id.Other = []string{purl.QualX}
 	}
-	
+
 	if purl.Type != "cargo" {
 		id.Arch = purl.QualArch
 	}
@@ -40,14 +40,14 @@ func ConvertCPEToGuacID(cpe CPE) GuacID {
 		Other:     cpe.Other,
 		PkgRel:    cpe.Update,
 		Edition:   cpe.Edition,
-	 //subpath does not exist for CPE
+		//subpath does not exist for CPE
 	}
 }
 
 func ParseCPE(cpeStr string) (CPE, error) {
 	// Format: cpe:/<part>:<vendor>:<product>:<version>:<update>:<edition>:<language>:<sw_edition>:<other>:<other>...
 	parts := strings.Split(cpeStr, ":")
-	if len(parts) < 6 {
+	if len(parts) < 6 || parts[1] == "*" || parts[2] == "*" || parts[3] == "*" || parts[4] == "*" || parts[5] == "*" {
 		return CPE{}, fmt.Errorf("invalid CPE format: %s", cpeStr)
 	}
 
@@ -56,25 +56,32 @@ func ParseCPE(cpeStr string) (CPE, error) {
 	product := parts[3]
 	version := parts[4]
 	update := parts[5]
+
 	edition := ""
 	language := ""
 	swEdition := ""
+
 	other := []string{}
 
-	if len(parts) > 6 {
+	if len(parts) > 6 && parts[6] != "*" {
 		edition = parts[6]
 	}
-	if len(parts) > 7 {
+
+	if len(parts) > 7 && parts[7] != "*" {
 		language = parts[7]
 	}
-	if len(parts) > 8 {
+
+	if len(parts) > 8 && parts[8] != "*" {
 		swEdition = parts[8]
 	}
-	for _, val := range parts[9:] {
-		if val != "*" {
-			continue
+
+	if len(parts) > 9 {
+		for _, val := range parts[9:] {
+			if val == "*" {
+				continue
+			}
+			other = append(other, val)
 		}
-		other = append(other, val)
 	}
 
 	return CPE{

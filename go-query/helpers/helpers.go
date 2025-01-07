@@ -1,11 +1,14 @@
 package helpers
 
 import (
+
 	"os"
 	"regexp"
-
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+
+
+	
 )
 
 func InitializeLogger() *zap.Logger {
@@ -34,6 +37,9 @@ func InitializeLogger() *zap.Logger {
 
 	return logger
 }
+
+
+
 func IsSHAOrUUID(s string) bool {
 
 	uuidRegex := regexp.MustCompile(`^[a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12}$`)
@@ -61,3 +67,4 @@ func IsSHAOrUUID(s string) bool {
 
 	return false
 }
+

@@ -2,7 +2,10 @@ package processidentifiers
 
 import (
 	"context"
+	"crypto/sha256"
 	"fmt"
+	"sort"
+	"strings"
 
 	"go-query/helpers"
 	"go-query/schemas"
@@ -51,20 +54,72 @@ func GetAllIdentifiers(ctx context.Context, be backends.Backend) ([]*model.Artif
 
 }
 
-func ProcessIdentifiers(logger *zap.Logger, artifacts []*model.Artifact, hasMetadatas []*model.HasMetadata, packages []*model.Package) ([]schemas.CPE, []schemas.Purl, []schemas.GuacID) {
+func getGuacIdDigest(guacID schemas.GuacID) string {
+	if guacID.Digest != "" {
+		return guacID.Digest
+	}
 
-	GuacIDs := []schemas.GuacID{}
+	var fields []string
+
+	if guacID.Ecosystem != "" {
+		fields = append(fields, guacID.Ecosystem)
+	}
+	if guacID.Namespace != "" {
+		fields = append(fields, guacID.Namespace)
+	}
+	if guacID.Name != "" {
+		fields = append(fields, guacID.Name)
+	}
+	if guacID.Version != "" {
+		fields = append(fields, guacID.Version)
+	}
+	if guacID.Arch != "" {
+		fields = append(fields, guacID.Arch)
+	}
+	if len(guacID.Other) > 0 {
+		sortedOther := append([]string{}, guacID.Other...)
+		sort.Strings(sortedOther)
+		fields = append(fields, sortedOther...)
+	}
+	if guacID.SubPath != "" {
+		fields = append(fields, guacID.SubPath)
+	}
+	if guacID.PkgRel != "" {
+		fields = append(fields, guacID.PkgRel)
+	}
+	if guacID.Edition != "" {
+		fields = append(fields, guacID.Edition)
+	}
+
+	combinedString := strings.Join(fields, "")
+	hash := sha256.Sum256([]byte(combinedString))
+	return fmt.Sprintf("%x", hash) 
+}
+func ProcessIdentifiers(logger *zap.Logger, artifacts []*model.Artifact, hasMetadatas []*model.HasMetadata, packages []*model.Package) ([]schemas.CPE, []schemas.Purl, map[string]schemas.GuacID) {
+
+	
+	GuacIDs := make(map[string]schemas.GuacID)
 
 	CPEs := []schemas.CPE{}
 	for _, metadata := range hasMetadatas {
 		if metadata.Key == "cpe" {
 			cpe, err := schemas.ParseCPE(metadata.Value)
 			if err != nil {
-				logger.Error("unable to parse", zap.String(metadata.Key, metadata.Value))
+				logger.Info("unable to parse", zap.String(metadata.Key, metadata.Value))
 				continue
 			}
 			CPEs = append(CPEs, cpe)
-			GuacIDs = append(GuacIDs, schemas.ConvertCPEToGuacID(cpe))
+			guacID := schemas.ConvertCPEToGuacID(cpe)
+
+			digest := getGuacIdDigest(guacID)
+			if existing, exists := GuacIDs[guacID.Digest]; exists {
+				existing.Count++
+				GuacIDs[guacID.Digest] = existing
+			} else {
+				guacID.Count = 1
+				
+				GuacIDs[digest] = guacID
+			}
 		}
 	}
 
@@ -77,7 +132,17 @@ func ProcessIdentifiers(logger *zap.Logger, artifacts []*model.Artifact, hasMeta
 
 		if len(pkg.Namespaces) == 0 {
 			Purls = append(Purls, basePurl)
-			GuacIDs = append(GuacIDs, schemas.ConvertPurlToGuacID(basePurl))
+			guacID := schemas.ConvertPurlToGuacID(basePurl)
+
+			digest := getGuacIdDigest(guacID)
+			if existing, exists := GuacIDs[guacID.Digest]; exists {
+				existing.Count++
+				GuacIDs[guacID.Digest] = existing
+			} else {
+				guacID.Count = 1
+				
+				GuacIDs[digest] = guacID
+			}
 			continue
 		}
 
@@ -87,7 +152,17 @@ func ProcessIdentifiers(logger *zap.Logger, artifacts []*model.Artifact, hasMeta
 
 			if len(namespace.Names) == 0 {
 				Purls = append(Purls, nsPurl)
-				GuacIDs = append(GuacIDs, schemas.ConvertPurlToGuacID(nsPurl))
+				guacID := schemas.ConvertPurlToGuacID(nsPurl)
+
+				digest := getGuacIdDigest(guacID)
+				if existing, exists := GuacIDs[guacID.Digest]; exists {
+					existing.Count++
+					GuacIDs[guacID.Digest] = existing
+				} else {
+					guacID.Count = 1
+					
+					GuacIDs[digest] = guacID
+				}
 				continue
 			}
 
@@ -97,7 +172,17 @@ func ProcessIdentifiers(logger *zap.Logger, artifacts []*model.Artifact, hasMeta
 
 				if len(name.Versions) == 0 {
 					Purls = append(Purls, namePurl)
-					GuacIDs = append(GuacIDs, schemas.ConvertPurlToGuacID(namePurl))
+					guacID := schemas.ConvertPurlToGuacID(namePurl)
+
+					digest := getGuacIdDigest(guacID)
+					if existing, exists := GuacIDs[guacID.Digest]; exists {
+						existing.Count++
+						GuacIDs[guacID.Digest] = existing
+					} else {
+						guacID.Count = 1
+						
+						GuacIDs[digest] = guacID
+					}
 					continue
 				}
 
@@ -108,13 +193,23 @@ func ProcessIdentifiers(logger *zap.Logger, artifacts []*model.Artifact, hasMeta
 
 					if len(version.Qualifiers) == 0 {
 						Purls = append(Purls, versionPurl)
-						GuacIDs = append(GuacIDs, schemas.ConvertPurlToGuacID(versionPurl))
+						guacID := schemas.ConvertPurlToGuacID(versionPurl)
+
+						digest := getGuacIdDigest(guacID)
+						if existing, exists := GuacIDs[guacID.Digest]; exists {
+							existing.Count++
+							GuacIDs[guacID.Digest] = existing
+						} else {
+							guacID.Count = 1
+							
+							GuacIDs[digest] = guacID
+						}
 						continue
 					}
 
 					for _, qualifier := range version.Qualifiers {
 						qualifierPurl := versionPurl
-						//compute qualarch and qualx here
+						// Compute qualarch and qualx here
 						switch qualifier.Key {
 						case "arch":
 							qualifierPurl.QualArch = qualifier.Value
@@ -122,29 +217,36 @@ func ProcessIdentifiers(logger *zap.Logger, artifacts []*model.Artifact, hasMeta
 							qualifierPurl.QualX = qualifier.Key + "|" + qualifier.Value
 						}
 						Purls = append(Purls, qualifierPurl)
-						GuacIDs = append(GuacIDs, schemas.ConvertPurlToGuacID(qualifierPurl))
-					}
+						guacID := schemas.ConvertPurlToGuacID(qualifierPurl)
 
+						digest := getGuacIdDigest(guacID)
+						
+						if existing, exists := GuacIDs[guacID.Digest]; exists {
+							existing.Count++
+							GuacIDs[guacID.Digest] = existing
+						} else {
+							guacID.Count = 1
+							
+							GuacIDs[digest] = guacID
+						}
+					}
 				}
 			}
 		}
 	}
 
 	return CPEs, Purls, GuacIDs
-
 }
 
 func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Graph[string, *schemas.GuacIDNode], error) {
 	guacIdGraph := graph.New(schemas.GuacIDNodeID, graph.Directed())
-
 	for _, gID := range GuacIDs {
 		if gID.Name != "" {
-
 			_, err := guacIdGraph.Vertex(gID.Name)
 			if err != nil && err != graph.ErrVertexAlreadyExists {
-				nodeType := schemas.NodeTypeSoft
+				nodeType := schemas.NodeHardnessSoft
 				if helpers.IsSHAOrUUID(gID.Name) {
-					nodeType = schemas.NodeTypeHard
+					nodeType = schemas.NodeHardnessHard
 				}
 
 				err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "Name|" + gID.Name, NodeType: nodeType})
@@ -158,9 +260,9 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 			// add arch
 			_, err := guacIdGraph.Vertex(gID.Arch)
 			if err != nil {
-				nodeType := schemas.NodeTypeSoft
+				nodeType := schemas.NodeHardnessSoft
 				if helpers.IsSHAOrUUID(gID.Name) {
-					nodeType = schemas.NodeTypeHard
+					nodeType = schemas.NodeHardnessHard
 				}
 				err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "Arch|" + gID.Arch, NodeType: nodeType})
 				if err != nil && err != graph.ErrVertexAlreadyExists {
@@ -170,9 +272,12 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err = guacIdGraph.Edge("Arch|"+gID.Arch, "Name|"+gID.Name)
 			if err != nil {
-				err = guacIdGraph.AddEdge("Arch|"+gID.Arch, "Name|"+gID.Name)
+				err = guacIdGraph.AddEdge("Arch|"+gID.Arch, "Name|"+gID.Name, graph.EdgeData(schemas.GuacIDEdge{}))
 				if err != nil && err != graph.ErrEdgeAlreadyExists {
-					logger.Error(err.Error())
+					logger.Error(err.Error(), zap.String("Source", "Arch|"+gID.Arch), zap.String("Target", "Name|"+gID.Name))
+				} else if err == graph.ErrEdgeAlreadyExists {
+					//update edge count
+
 				}
 			}
 		}
@@ -182,9 +287,9 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 			//add ecosystem
 			_, err := guacIdGraph.Vertex(gID.Ecosystem)
 			if err != nil {
-				nodeType := schemas.NodeTypeSoft
+				nodeType := schemas.NodeHardnessSoft
 				if helpers.IsSHAOrUUID(gID.Name) {
-					nodeType = schemas.NodeTypeHard
+					nodeType = schemas.NodeHardnessHard
 				}
 				err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "Ecosystem|" + gID.Ecosystem, NodeType: nodeType})
 				if err != nil && err != graph.ErrVertexAlreadyExists {
@@ -194,9 +299,12 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err = guacIdGraph.Edge("Ecosystem|"+gID.Ecosystem, "Name|"+gID.Name)
 			if err != nil {
-				err = guacIdGraph.AddEdge("Ecosystem|"+gID.Ecosystem, "Name|"+gID.Name)
+				err = guacIdGraph.AddEdge("Ecosystem|"+gID.Ecosystem, "Name|"+gID.Name, graph.EdgeData(schemas.GuacIDEdge{}))
 				if err != nil && err != graph.ErrEdgeAlreadyExists {
-					logger.Error(err.Error())
+					logger.Error(err.Error(), zap.String("Source", "Ecosystem|"+gID.Ecosystem), zap.String("Target", "Name|"+gID.Name))
+				} else if err == graph.ErrEdgeAlreadyExists {
+					//update edge count
+
 				}
 			}
 
@@ -206,9 +314,9 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 			// add edition
 			_, err := guacIdGraph.Vertex(gID.Edition)
 			if err != nil {
-				nodeType := schemas.NodeTypeSoft
+				nodeType := schemas.NodeHardnessSoft
 				if helpers.IsSHAOrUUID(gID.Name) {
-					nodeType = schemas.NodeTypeHard
+					nodeType = schemas.NodeHardnessHard
 				}
 				err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "Edition|" + gID.Edition, NodeType: nodeType})
 				if err != nil && err != graph.ErrVertexAlreadyExists {
@@ -218,9 +326,11 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err = guacIdGraph.Edge("Edition|"+gID.Edition, "Name|"+gID.Name)
 			if err != nil {
-				err = guacIdGraph.AddEdge("Edition|"+gID.Edition, "Name|"+gID.Name)
+				err = guacIdGraph.AddEdge("Edition|"+gID.Edition, "Name|"+gID.Name, graph.EdgeData(schemas.GuacIDEdge{}))
 				if err != nil && err != graph.ErrEdgeAlreadyExists {
-					logger.Error(err.Error())
+					logger.Error(err.Error(), zap.String("Source", "Edition|"+gID.Edition), zap.String("Target", "Name|"+gID.Name))
+				} else if err == graph.ErrEdgeAlreadyExists {
+					//update edge count
 				}
 			}
 		}
@@ -230,9 +340,9 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 			// add subpath
 			_, err := guacIdGraph.Vertex(gID.SubPath)
 			if err != nil {
-				nodeType := schemas.NodeTypeSoft
+				nodeType := schemas.NodeHardnessSoft
 				if helpers.IsSHAOrUUID(gID.Name) {
-					nodeType = schemas.NodeTypeHard
+					nodeType = schemas.NodeHardnessHard
 				}
 				err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "SubPath|" + gID.SubPath, NodeType: nodeType})
 				if err != nil && err != graph.ErrVertexAlreadyExists {
@@ -242,9 +352,11 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err = guacIdGraph.Edge("SubPath|"+gID.SubPath, "Name|"+gID.Name)
 			if err != nil {
-				err = guacIdGraph.AddEdge("SubPath|"+gID.SubPath, "Name|"+gID.Name)
+				err = guacIdGraph.AddEdge("SubPath|"+gID.SubPath, "Name|"+gID.Name, graph.EdgeData(schemas.GuacIDEdge{}))
 				if err != nil && err != graph.ErrEdgeAlreadyExists {
-					logger.Error(err.Error())
+					logger.Error(err.Error(), zap.String("Source", "SubPath|"+gID.SubPath), zap.String("Target", "Name|"+gID.Name))
+				} else if err == graph.ErrEdgeAlreadyExists {
+					//update edge count
 				}
 			}
 		}
@@ -252,9 +364,9 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 		if gID.Version != "" {
 			_, err := guacIdGraph.Vertex(gID.Version)
 			if err != nil {
-				nodeType := schemas.NodeTypeSoft
+				nodeType := schemas.NodeHardnessSoft
 				if helpers.IsSHAOrUUID(gID.Name) {
-					nodeType = schemas.NodeTypeHard
+					nodeType = schemas.NodeHardnessHard
 				}
 				err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "Version|" + gID.Version, NodeType: nodeType})
 				if err != nil && err != graph.ErrVertexAlreadyExists {
@@ -264,9 +376,11 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err = guacIdGraph.Edge("Version|"+gID.Version, "Name|"+gID.Name)
 			if err != nil {
-				err = guacIdGraph.AddEdge("Version|"+gID.Version, "Name|"+gID.Name)
+				err = guacIdGraph.AddEdge("Version|"+gID.Version, "Name|"+gID.Name, graph.EdgeData(schemas.GuacIDEdge{}))
 				if err != nil && err != graph.ErrEdgeAlreadyExists {
-					logger.Error(err.Error())
+					logger.Error(err.Error(), zap.String("Source", "Version|"+gID.Version), zap.String("Target", "Name|"+gID.Name))
+				} else if err == graph.ErrEdgeAlreadyExists {
+					//update edge count
 				}
 			}
 		}
@@ -275,9 +389,9 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err := guacIdGraph.Vertex(gID.PkgRel)
 			if err != nil {
-				nodeType := schemas.NodeTypeSoft
+				nodeType := schemas.NodeHardnessSoft
 				if helpers.IsSHAOrUUID(gID.Name) {
-					nodeType = schemas.NodeTypeHard
+					nodeType = schemas.NodeHardnessHard
 				}
 				err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "PkgRel|" + gID.PkgRel, NodeType: nodeType})
 				if err != nil && err != graph.ErrVertexAlreadyExists {
@@ -287,9 +401,11 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err = guacIdGraph.Edge("PkgRel|"+gID.PkgRel, "Name|"+gID.Name)
 			if err != nil {
-				err = guacIdGraph.AddEdge("PkgRel|"+gID.PkgRel, "Name|"+gID.Name)
+				err = guacIdGraph.AddEdge("PkgRel|"+gID.PkgRel, "Name|"+gID.Name, graph.EdgeData(schemas.GuacIDEdge{}))
 				if err != nil && err != graph.ErrEdgeAlreadyExists {
-					logger.Error(err.Error())
+					logger.Error(err.Error(), zap.String("Source", "PkgRel|"+gID.PkgRel), zap.String("Target", "Name|"+gID.Name))
+				} else if err == graph.ErrEdgeAlreadyExists {
+					//update edge count
 				}
 			}
 		}
@@ -298,9 +414,9 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err := guacIdGraph.Vertex(gID.Namespace)
 			if err != nil {
-				nodeType := schemas.NodeTypeSoft
+				nodeType := schemas.NodeHardnessSoft
 				if helpers.IsSHAOrUUID(gID.Name) {
-					nodeType = schemas.NodeTypeHard
+					nodeType = schemas.NodeHardnessHard
 				}
 				err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "Namespace|" + gID.Namespace, NodeType: nodeType})
 				if err != nil && err != graph.ErrVertexAlreadyExists {
@@ -310,9 +426,11 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 			_, err = guacIdGraph.Edge("Namespace|"+gID.Namespace, "Name|"+gID.Name)
 			if err != nil {
-				err = guacIdGraph.AddEdge("Namespace|"+gID.Namespace, "Name|"+gID.Name)
+				err = guacIdGraph.AddEdge("Namespace|"+gID.Namespace, "Name|"+gID.Name, graph.EdgeData(schemas.GuacIDEdge{}))
 				if err != nil && err != graph.ErrEdgeAlreadyExists {
-					logger.Error(err.Error())
+					logger.Error(err.Error(), zap.String("Source", "Namespace|"+gID.Namespace), zap.String("Target", "Name|"+gID.Name))
+				} else if err == graph.ErrEdgeAlreadyExists {
+					//update edge count
 				}
 			}
 		}
@@ -321,9 +439,9 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 			for _, other := range gID.Other {
 				_, err := guacIdGraph.Vertex(other)
 				if err != nil {
-					nodeType := schemas.NodeTypeSoft
+					nodeType := schemas.NodeHardnessSoft
 					if helpers.IsSHAOrUUID(gID.Name) {
-						nodeType = schemas.NodeTypeHard
+						nodeType = schemas.NodeHardnessHard
 					}
 					err = guacIdGraph.AddVertex(&schemas.GuacIDNode{NodeID: "Other|" + other, NodeType: nodeType})
 					if err != nil && err != graph.ErrVertexAlreadyExists {
@@ -333,9 +451,11 @@ func CreateGuacIDGraph(logger *zap.Logger, GuacIDs []schemas.GuacID) (graph.Grap
 
 				_, err = guacIdGraph.Edge("Other|"+other, "Name|"+gID.Name)
 				if err != nil {
-					err = guacIdGraph.AddEdge("Other|"+other, "Name|"+gID.Name)
+					err = guacIdGraph.AddEdge("Other|"+other, "Name|"+gID.Name, graph.EdgeData(schemas.GuacIDEdge{}))
 					if err != nil && err != graph.ErrEdgeAlreadyExists {
-						logger.Error(err.Error())
+						logger.Error(err.Error(), zap.String("Source", "Other|"+other), zap.String("Target", "Name|"+gID.Name))
+					} else if err == graph.ErrEdgeAlreadyExists {
+						//update edge count
 					}
 				}
 			}

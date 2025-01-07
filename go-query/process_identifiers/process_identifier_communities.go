@@ -48,32 +48,29 @@ func ComputeModularityMatrix(g graph.Graph[string, *schemas.GuacIDNode]) (*mat.D
 	return B, nodes
 }
 
-// SpectralDivision divides a graph into two communities using the leading eigenvector
 func SpectralDivision(B *mat.Dense, nodes []string) ([]string, []string, bool) {
 	var eigen mat.Eigen
 	if ok := eigen.Factorize(B, mat.EigenRight); !ok {
 		return nil, nil, false
 	}
 
-	// Find the leading eigenvector (largest eigenvalue)
+
 	eigenvalues := eigen.Values(nil)
-	maxIdx := -1
-	maxVal := math.Inf(-1)
+	maxIdx, maxVal := -1, math.Inf(-1)
 	for i, val := range eigenvalues {
 		if real(val) > maxVal {
-			maxVal = real(val)
-			maxIdx = i
+			maxIdx, maxVal = i, real(val)
 		}
 	}
 
-	if maxVal <= 0 {
-		// No positive eigenvalue; stop splitting
+
+	if maxVal < 1e-6 {
 		return nil, nil, false
 	}
 
+
 	vecs := mat.NewCDense(len(nodes), len(nodes), nil)
 	eigen.VectorsTo(vecs)
-
 
 	group1, group2 := []string{}, []string{}
 	for i, node := range nodes {
@@ -93,7 +90,7 @@ func RecursiveCommunityDetection(g graph.Graph[string, *schemas.GuacIDNode]) []s
 	var detect func(subgraph graph.Graph[string, *schemas.GuacIDNode], nodes []string, communityID string)
 	detect = func(subgraph graph.Graph[string, *schemas.GuacIDNode], nodes []string, communityID string) {
 		if len(nodes) <= 1 {
-			// Stop splitting if only one node remains
+		
 			communities = append(communities, schemas.Community{
 				CommunityID: communityID,
 			
